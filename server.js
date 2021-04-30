@@ -55,7 +55,9 @@ app
     (function create(folder, object) {
       console.log("hit?");
       for (let key in object) {
-        if (typeof object[key] === "object" && !object[key].hasOwnProperty("file")) {
+      //  console.log(object[key], object[key].hasOwnProperty("file"))
+        console.log(getNested(object[key], "type"), "type has been located")
+        if (typeof object[key] === "object" && !(getNested(object[key], "type") === "file")) {
           fs.mkdir(path.join(__dirname, folder + key), (err) => {
             if (err) {
               return console.error(err);
@@ -65,18 +67,17 @@ app
               create(folder + key + "/", object[key]);
             }
           });
+        } else if((getNested(object[key], "type") === "file")) {
+          fs.writeFile(path.join(__dirname, folder + key), '', function (err) {
+            if (err) return console.log(err);
+            console.log(object[key], "Created file");
+          });
 
-          //   fs.mkdir(folder + key, function () {
-          //     if (Object.keys(object[key]).length) {
-          //       console.log(object[key], "Created folder");
-          //       create(folder + key + "/", object[key]);
-          //     }
-          //   });
         }
       }
-    })("/", root);
+    })("/public/", root);
 
-    fs.writeFile("public/test/helloworld.txt", "Hello World!", function (err) {
+    fs.writeFile("public/test/helloworld.txt", "", function (err) {
       if (err) return console.log(err);
       console.log("Hello World > helloworld.txt");
     });
@@ -90,6 +91,11 @@ app
     console.error(err.stack);
     process.exit(1);
   });
+
+  // get next nested object property
+  function getNested(obj, ...args) {
+    return args.reduce((obj, level) => obj && obj[level], obj)
+  }
 
 /**
    *    (function create(folder, o) {
