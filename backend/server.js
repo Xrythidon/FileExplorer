@@ -41,13 +41,21 @@ let root = {
   },
 };
 
-app.get("/", (req, res) => {
+// Redirect to static /public route
+app.get("/api/potato/", (req, res, next) => {
+  req.url = "/api/path";
+
+  return app._router.handle(req, res, next);
+});
+
+
+app.get("/api/", (req, res) => {
   res.send("API is running...");
 });
 
-app.use("/public", express.static(path.join(__dirname, "/public")), (req, res) => {
+app.use("/api/path", express.static(path.join(__dirname, "/public"), { redirect : false }), (req, res) => {
   let nextPath = [];
-
+  console.log(path.resolve(), __dirname, "resolve");
   console.log(path.join(__dirname, `/public/${req.path}`));
   fs.readdir(path.join(__dirname, `/public/${req.path}`), (err, files) => {
     files.forEach((file) => {
@@ -64,10 +72,6 @@ app.use("/public", express.static(path.join(__dirname, "/public")), (req, res) =
   nextPaths = [];
 });
 
-
-app.get("/path/mypath", (req, res) => {
-  res.send("API is running...");
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Server running in DEV on port ${PORT}`.yellow.bold));

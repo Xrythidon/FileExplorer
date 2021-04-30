@@ -1,5 +1,6 @@
 {
-  "name": "breadcrumb",
+  "name": "frontend",
+  "proxy": "http://127.0.0.1:5000",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +10,7 @@
     "server": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "axios": "^0.21.1",
     "next": "10.2.0",
     "react": "17.0.2",
     "react-dom": "17.0.2"
