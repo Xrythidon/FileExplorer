@@ -45,16 +45,29 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-app.use('/public', express.static(path.join(__dirname, "/public")), (req, res) => {
-    // fs.readdir("./public/", (err, files) => {
-    //     files.forEach(file => {
-    //       console.log(file);
-    //     });
-    //   });
+app.use("/public", express.static(path.join(__dirname, "/public")), (req, res) => {
+  let nextPath = [];
 
-    res.json("Hit public folder")
-    
-} )
+  console.log(path.join(__dirname, `/public/${req.path}`));
+  fs.readdir(path.join(__dirname, `/public/${req.path}`), (err, files) => {
+    files.forEach((file) => {
+      console.log(file);
+      nextPath.push(file);
+    });
+
+    res.json({
+      currentPath: req.path,
+      nextPath,
+    });
+  });
+
+  nextPaths = [];
+});
+
+
+app.get("/path/mypath", (req, res) => {
+  res.send("API is running...");
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Server running in DEV on port ${PORT}`.yellow.bold));
@@ -80,32 +93,13 @@ function getNested(obj, ...args) {
         }
       });
     } else if (getNested(object[key], "type") === "file") {
-      fs.writeFile(path.join(__dirname, folder + key), "", function (err) {
+      fs.writeFile(path.join(__dirname, folder + key), `THIS IS FILE: ${key}`, function (err) {
         if (err) return console.log(err);
         console.log(object[key], "Created file");
       });
     }
   }
 })("/public/", root);
-
-/**
-   *    (function create(folder, o) {
-      console.log("hit?");
-      for (let key in o) {
-        if (typeof o[key] === "object" && o[key] !== null) {
-          fs.mkdir(folder + key, function () {
-            if (Object.keys(o[key]).length) {
-              console.log(o[key], "Created folder");
-              create(folder + key + "/", o[key]);
-            }
-          });
-        } else {
-          console.log(o[key], "Created file");
-          fs.writeFile(folder + key + (o[key] === null ? "" : "." + o[key]));
-        }
-      }
-    })("/", test);
-   */
 
 /*GET /path/{mypath} should return the data about the given path.
    For directories, it should only include direct children, not the full subtree (otherwise it would not work on a real filesystem with millions of files). */
