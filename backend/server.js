@@ -48,30 +48,34 @@ app.get("/api/potato/", (req, res, next) => {
   return app._router.handle(req, res, next);
 });
 
-
 app.get("/api/", (req, res) => {
   res.send("API is running...");
 });
 
-app.use("/api/path", express.static(path.join(__dirname, "/public"), { redirect : false }), (req, res) => {
+app.use("/api/path", express.static(path.join(__dirname, "/public"), { redirect: false }), (req, res) => {
   let nextPath = [];
   console.log(path.resolve(), __dirname, "resolve");
   console.log(path.join(__dirname, `/public/${req.path}`));
   fs.readdir(path.join(__dirname, `/public/${req.path}`), (err, files) => {
-    files.forEach((file) => {
-      console.log(file);
-      nextPath.push(file);
-    });
+    try {
+      files.forEach((file) => {
+        console.log(file);
+        nextPath.push(file);
+      });
 
-    res.json({
-      currentPath: req.path,
-      nextPath,
-    });
+      res.json({
+        currentPath: req.path,
+        nextPath,
+      });
+    } catch (error) {
+      console.error(error);
+      res.statusCode = 400;
+      res.json("You are trying to access a route that doesn't exist or do not have admin privileges too")
+    }
   });
 
   nextPaths = [];
 });
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Server running in DEV on port ${PORT}`.yellow.bold));
