@@ -14,3 +14,13 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.folder {
+  background-color: blue;
+  color: white;
+}
+
+.file {
+  background-color: red;
+  color: white;
+}

@@ -54,13 +54,26 @@ app.get("/api/", (req, res) => {
 
 app.use("/api/path", express.static(path.join(__dirname, "/public"), { redirect: false }), (req, res) => {
   let nextPath = [];
-  console.log(path.resolve(), __dirname, "resolve");
-  console.log(path.join(__dirname, `/public/${req.path}`));
   fs.readdir(path.join(__dirname, `/public/${req.path}`), (err, files) => {
     try {
       files.forEach((file) => {
         console.log(file);
-        nextPath.push(file);
+
+        // Check to see if folder
+        const isFolder = (path) => {
+          try {
+            const stat = fs.lstatSync(path);
+            return stat.isDirectory() ? "folder" : "file";
+          } catch (e) {
+            // lstatSync throws an error if path doesn't exist
+            return "file";
+          }
+        };
+
+        nextPath.push({
+          fileName: file,
+          fileType: isFolder(path.join(__dirname, `/public/${req.path}`, file)),
+        });
       });
 
       res.json({
@@ -70,7 +83,7 @@ app.use("/api/path", express.static(path.join(__dirname, "/public"), { redirect:
     } catch (error) {
       console.error(error);
       res.statusCode = 400;
-      res.json("You are trying to access a route that doesn't exist or do not have admin privileges too")
+      res.json("You are trying to access a route that doesn't exist or do not have admin privileges too");
     }
   });
 

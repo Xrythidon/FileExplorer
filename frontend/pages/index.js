@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../styles/Home.module.css";
@@ -7,11 +6,13 @@ export default function Home() {
   const [data, setData] = useState(null);
   const [res, setRes] = useState(null);
   const [path, setPath] = useState("");
+  const [cachedCurrentPath, setCachedCurrentPath] = useState(null);
 
   useEffect(async () => {
     try {
       const response = await axios.get(path ? path : "/api/path/");
       setData(response.data);
+      setCachedCurrentPath(response.data.currentPath ? response.data.currentPath : path);
       setRes(response);
     } catch (error) {
       console.error(error);
@@ -24,29 +25,35 @@ export default function Home() {
   };
 
   const checkTypeJSON = () => {
+    const isJSONType = res.headers["content-type"].includes("application/json");
+    console.log(isJSONType);
+    if (isJSONType && data.nextPath) {
+      return data.nextPath.map((element, index) => {
+      return <button className="file" key={index} onClick={() => handleClick(element)}>
+          {element}
+        </button>;
 
-      const isJSONType = res.headers["content-type"].includes("application/json");
-      console.log(isJSONType);
-      if (isJSONType && data.nextPath) {
-      return  data.nextPath.map((element, index) => (
-          <button key={index} onClick={() => handleClick(element)}>
-            {element}
-          </button>
-        ))
-      } else {
-        return data
-      }
-    
+        if (element) {
+          <button className="file" key={index} onClick={() => handleClick(element)}>
+          {element}
+        </button>;
+          
+        } else {
+        }
+
+      });
+    } else {
+      return data;
+    }
   };
+  // red colour -> file
+  // blue color -> folder
 
-  //console.log(res);
-  //console.log(res && res.headers["content-type"].includes("application/json"), "this is a json file");
   return (
     <div className={styles.container}>
-      <div>
-        {res && checkTypeJSON()}
-      </div>
-      <p>{data && data.currentPath}</p>
+      <div>{res && checkTypeJSON()}</div>
+      <p>{data && cachedCurrentPath}</p>
     </div>
   );
 }
+
