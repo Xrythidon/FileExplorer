@@ -4,24 +4,49 @@ import axios from "axios";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
+  const [res, setRes] = useState(null);
   const [path, setPath] = useState("");
 
   useEffect(async () => {
     try {
-      const { data } = await axios.get(`/api/path/${path}`);
-      setData(data);
+      const response = await axios.get(path ? path : "/api/path/");
+      setData(response.data);
+      setRes(response);
     } catch (error) {
       console.error(error);
     }
   }, [path]);
 
-  const handleClick = () => {
-    setPath(data.nextPath[0]);
-  }
+  const handleClick = (nextPathElement) => {
+    console.log(`/api/path${data.currentPath}${data.currentPath === "/" ? "" : "/"}${data.nextPath}`);
+    setPath(`/api/path${data.currentPath}${data.currentPath === "/" ? "" : "/"}${nextPathElement}`);
+  };
 
-  return <div className={styles.container}>
-    <button onClick={handleClick}>{data.nextPath}</button>
-    <p>{data && data.currentPath}</p>
-  </div>;
+  const checkTypeJSON = () => {
+
+      const isJSONType = res.headers["content-type"].includes("application/json");
+      console.log(isJSONType);
+      if (isJSONType && data.nextPath) {
+      return  data.nextPath.map((element, index) => (
+          <button key={index} onClick={() => handleClick(element)}>
+            {element}
+          </button>
+        ))
+      } else {
+        return data
+      }
+    
+  };
+
+  //console.log(res);
+  //console.log(res && res.headers["content-type"].includes("application/json"), "this is a json file");
+  return (
+    <div className={styles.container}>
+      <div>
+        {res && checkTypeJSON()}
+      </div>
+      <p>{data && data.currentPath}</p>
+    </div>
+  );
 }
