@@ -29,18 +29,19 @@ export default function Home() {
     console.log(isJSONType);
     if (isJSONType && data.nextPath) {
       return data.nextPath.map((element, index) => {
-      return <button className="file" key={index} onClick={() => handleClick(element)}>
-          {element}
-        </button>;
-
-        if (element) {
-          <button className="file" key={index} onClick={() => handleClick(element)}>
-          {element}
-        </button>;
-          
+        if (element.fileType === "folder") {
+          return (
+            <button className="folder"  key={index} onClick={() => handleClick(element.fileName)}>
+              {element.fileName}
+            </button>
+          );
         } else {
+          return (
+            <button className="file"  key={index} onClick={() => handleClick(element.fileName)}>
+              {element.fileName}
+            </button>
+          );
         }
-
       });
     } else {
       return data;
@@ -56,4 +57,3 @@ export default function Home() {
     </div>
   );
 }
-
