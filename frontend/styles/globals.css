@@ -24,3 +24,12 @@ a {
   background-color: red;
   color: white;
 }
+
+p {
+  cursor: pointer;
+}
+
+.currentlySelectedRoute {
+  font-weight: 800;
+  cursor: auto;
+}

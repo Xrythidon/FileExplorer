@@ -10,9 +10,11 @@
     "server": "node server.js"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
     "axios": "^0.21.1",
     "next": "10.2.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-query": "^3.15.2"
   }
 }
