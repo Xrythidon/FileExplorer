@@ -1,4 +1,3 @@
-import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import axios from "axios";
 import Breadcrumb from "../components/Breadcrumb";

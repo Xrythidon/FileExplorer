@@ -35,7 +35,7 @@ p {
 }
 
 .explorer__title{
-  margin-bottom: 15px;
+  margin-bottom: 40px;
   text-align: center;
 
 }
@@ -80,5 +80,9 @@ p {
   font-weight: 600;
   color: orchid;
   cursor: auto;
+}
+
+.breadcrumb__container {
+  margin-left: 20px;
 }
 
