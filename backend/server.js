@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const colors = require("colors");
+require("dotenv").config();
 
 const app = express();
 // app.use(express.json());
@@ -99,7 +100,6 @@ function getNested(obj, ...args) {
 }
 
 (function create(folder, object) {
-  console.log("hit?");
   for (let key in object) {
     //  console.log(object[key], object[key].hasOwnProperty("file"))
     console.log(getNested(object[key], "type"), "type has been located");
@@ -121,6 +121,3 @@ function getNested(obj, ...args) {
     }
   }
 })("/public/", root);
-
-/*GET /path/{mypath} should return the data about the given path.
-   For directories, it should only include direct children, not the full subtree (otherwise it would not work on a real filesystem with millions of files). */
