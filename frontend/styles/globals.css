@@ -1,4 +1,4 @@
-html,
+html, *,
 body {
   padding: 0;
   margin: 0;
@@ -16,20 +16,69 @@ a {
 }
 
 .folder {
-  background-color: blue;
-  color: white;
+  color: coral;
 }
 
 .file {
-  background-color: red;
-  color: white;
+  color: cornflowerblue;
 }
 
 p {
   cursor: pointer;
 }
 
-.currentlySelectedRoute {
-  font-weight: 800;
+.explorer {
+  max-width: 60%;
+  margin: 50px auto;
+  font-family: Helvetica, sans-serif;
+
+}
+
+.explorer__title{
+  margin-bottom: 15px;
+  text-align: center;
+
+}
+
+.directory {
+  
+  border-top: solid 1px orchid;
+  display: grid;
+  margin-top: 5px;
+  padding-top: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(75px, 0.1fr));
+  column-gap: 15px;
+  row-gap: 18px;
+  
+}
+
+
+
+.directory__icon {
+  font-size: 50px;
+  cursor: pointer;
+}
+
+.directory__filename {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 1px 1px;
+}
+
+.directory__item {
+  padding: 2px 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  height: auto;
+  line-height: 10px;
+}
+
+.breadcrumb__currentlySelected {
+  font-weight: 600;
+  color: orchid;
   cursor: auto;
 }
+

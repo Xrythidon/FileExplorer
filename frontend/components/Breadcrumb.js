@@ -32,9 +32,9 @@ export default function Breadcrumb({ paths, setPaths, API_BASE_PATH }) {
 
   return (
     <Breadcrumbs separator="›" aria-label="breadcrumb">
-       <p onClick={handleClickRoot} key="crumb">root</p>
+       <p className={ crumbs.length === 0 ? "breadcrumb__currentlySelected" : "" } onClick={handleClickRoot} key="crumb">root</p>
       {paths && crumbs.map((crumb, index) => (
-        <p onClick={() => handleClick(index)} key="crumb">{crumb}</p>
+        <p className={ index === crumbs.length -1 ? "breadcrumb__currentlySelected" : "" } onClick={() => handleClick(index)} key="crumb">{crumb}</p>
       ))}
 
       {/* <p href="/" onClick={handleClick}>

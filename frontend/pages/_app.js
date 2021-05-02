@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import 'font-awesome/css/font-awesome.min.css';
 import { QueryClient, QueryClientProvider } from "react-query";
 
 // Create a client

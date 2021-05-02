@@ -28,32 +28,30 @@ export default function Home() {
       return data.nextPath.map((element, index) => {
         if (element.fileType === "folder") {
           return (
-            <button className="folder" key={index} onClick={() => handleClick(element.fileName)}>
-              {element.fileName}
-            </button>
+            <div className="directory__item folder" key={index} onClick={() => handleClick(element.fileName)}>
+              <i className="directory__icon fa fa-folder-open  fa-3x"></i>
+              <p className="directory__filename">{element.fileName}</p>
+            </div>
           );
         } else {
           return (
-            // cache the  filename to the path when this is clicked
-            <button className="file" key={index} onClick={() => handleClick(element.fileName)}>
-              {element.fileName}
-            </button>
+            <div className="directory__item file" key={index} onClick={() => handleClick(element.fileName)}>
+              <i className="fa fa-file  fa-3x"></i>
+              <p className="directory__filename">{element.fileName}</p>
+            </div>
           );
         }
       });
     } else if (!data.nextPath) {
-      // validate
       return data;
     }
   };
-  // red colour -> file
-  // blue color -> folder
 
   return (
-    <div className={styles.container}>
-      {isSuccess && !isFetching && <Breadcrumb paths={path} setPaths={setPath} API_BASE_PATH={API_BASE_PATH} />}
-      <div>{isSuccess && checkTypeJSON(headers)}</div>
-      {isSuccess && data.currentPath}
+    <div className="explorer">
+      <h1 className="explorer__title">File Explorer</h1>
+      {isSuccess && !isFetching ? <Breadcrumb paths={path} setPaths={setPath} API_BASE_PATH={API_BASE_PATH} /> : <p>Loading...</p>}
+      <div className="directory">{isSuccess && checkTypeJSON(headers) }</div>
     </div>
   );
 }
