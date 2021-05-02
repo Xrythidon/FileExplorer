@@ -9,8 +9,12 @@ export default function Home() {
   const [headers, setHeaders] = useState(null);
   const API_BASE_PATH = "/api/path/";
 
+  //console.log(process.env.PROD_API_HOST, process.env.NEXT_ENV)
   const { isSuccess, data, isFetching } = useQuery(["directory", path], async (path) => {
-    const { data, headers } = await axios.get(path.queryKey[1] ? path.queryKey[1] : API_BASE_PATH);
+    console.log(path.queryKey[1] ? path.queryKey[1] : process.env.NEXT_ENV === "development" ? API_BASE_PATH : process.env.PROD_API_HOST);
+
+    const HOST = (process.env.NEXT_ENV === "production" ? process.env.PROD_API_HOST : "") // if production, send api host else redirect to next proxy
+    const { data, headers } = await axios.get(path.queryKey[1] ? `${HOST}${path.queryKey[1]}` : `${HOST}${API_BASE_PATH}` );
     setHeaders(headers);
     return data;
   });
