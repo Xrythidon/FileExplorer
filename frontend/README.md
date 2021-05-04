@@ -8,5 +8,5 @@ Built for ParseHub as a technical assessment.
 
 ## Build
 
-https://pictureaday.netlify.app/
+https://file-explorer-pi.vercel.app
 
